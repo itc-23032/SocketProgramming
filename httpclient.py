@@ -34,12 +34,12 @@ def recv_msg(sock, chunk_len=1024):
         yield received_chunk
 
 
-def main():
+def main(IP_ADDR, PORT):
     """スクリプトとして実行されたときに呼び出されるメイン関数"""
     # IPv4 / TCP で通信するソケットを用意する
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # ループバックアドレスの TCP/80 ポートに接続する
-    client_socket.connect(('127.0.0.1', 80))
+    client_socket.connect((IP_ADDR, PORT))
     # HTTP サーバからドキュメントを取得するための GET リクエスト
     request_text = 'GET / HTTP/1.0\r\n\r\n'
     # 文字列をバイト列にエンコードする
@@ -57,5 +57,6 @@ def main():
 
 
 if __name__ == '__main__':
+    IP_ADDR, PORT = input()
     """スクリプトのエントリーポイントとしてメイン関数を実行する"""
-    main()
+    main(IP_ADDR, int(PORT))
