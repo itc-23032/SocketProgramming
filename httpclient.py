@@ -41,15 +41,17 @@ def main(IP_ADDR, PORT):
     # ループバックアドレスの TCP/80 ポートに接続する
     client_socket.connect((IP_ADDR, PORT))
     # HTTP サーバからドキュメントを取得するための GET リクエスト
-    request_text = 'GET / HTTP/1.0\r\n\r\n'
+    request_text = 'GET / HTTP/1.1\r\n\r\n'
+    request_text += 'Host: {IP_ADDR}:{int(PORT)}\r\n'
+    request_text += '\r\n'
     # 文字列をバイト列にエンコードする
-    request_bytes = request_text.encode('ASCII')
+    request_bytes = request_text.encode('utf-8')
     # ソケットにリクエストのバイト列を書き込む
     send_msg(client_socket, request_bytes)
     # ソケットからレスポンスのバイト列を読み込む
     received_bytes = b''.join(recv_msg(client_socket))
     # 読み込んだバイト列を文字列にデコードする
-    received_text = received_bytes.decode('ASCII')
+    received_text = received_bytes.decode('utf-8')
     # 得られた文字列を表示する
     print(received_text)
     # 使い終わったソケットを閉じる
